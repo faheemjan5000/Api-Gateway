@@ -15,4 +15,14 @@ public class FallBAckMethodController {
     public String departmentServiceFallBackMethod(){
         return "Department Service is taking longer than Expect. Please Try again later.";
     }
+
+    @GetMapping("/manytomanyServiceFallBack")
+    public String manytomanyServiceFallBack(){
+        return "many-to-many Service is taking longer than Expected. Please Try again later.";
+    }
+
+    @GetMapping("/carfactoryServiceFallBack")
+    public String carfactoryServiceFallBack(){
+        return "car-factory Service is taking longer than Expected. Please Try again later.";
+    }
 }

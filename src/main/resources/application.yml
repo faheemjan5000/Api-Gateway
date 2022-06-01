@@ -36,12 +36,22 @@ spring:
             lb://CAR-FACTORY
           predicates:
                   - Path=/car/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CAR-FACTORY
+                fallbackuri: forward:/carfactoryServiceFallBack
 
         - id: MANY-TO-MANY
           uri:
             lb://MANY-TO-MANY
           predicates:
               - Path=/manytomany/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: MANY-TO-MANY
+                fallbackuri: forward:/manytomanyServiceFallBack
 
       discovery:
         locator:
