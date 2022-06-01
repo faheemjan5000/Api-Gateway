@@ -1,0 +1,64 @@
+server:
+  port: 9191
+
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+        - id: CURRENCY-CONVERSION
+          uri:
+            lb://CURRENCY-CONVERSION
+          predicates:
+            - Path=/currency-conversion/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CURRENCY-CONVERSION
+                fallbackuri: forward:/userServiceFallBack
+
+        - id: CURRENCY-EXCHANGE
+          uri:
+            lb://CURRENCY-EXCHANGE
+          predicates:
+            - Path=/exchange-rate/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CURRENCY-EXCHANGE
+                fallbackuri: forward:/departmentServiceFallBack
+
+        - id: CAR-FACTORY
+          uri:
+            lb://CAR-FACTORY
+          predicates:
+                  - Path=/car/**
+
+        - id: MANY-TO-MANY
+          uri:
+            lb://MANY-TO-MANY
+          predicates:
+              - Path=/manytomany/**
+
+      discovery:
+        locator:
+          enabled: true
+hystrix:
+  commond:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 4000
+
+
+managements:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+
